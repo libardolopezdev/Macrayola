@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: tooltip.tsx
+ */
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 

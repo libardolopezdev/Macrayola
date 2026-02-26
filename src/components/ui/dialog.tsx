@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: dialog.tsx
+ */
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";

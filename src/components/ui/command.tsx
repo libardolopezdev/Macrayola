@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: command.tsx
+ */
 import * as React from "react";
 import { type DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";

@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: use-mobile.tsx
+ */
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 768;

@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: sheet.tsx
+ */
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";

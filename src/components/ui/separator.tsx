@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: separator.tsx
+ */
 import * as React from "react";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 

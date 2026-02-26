@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: progress.tsx
+ */
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 

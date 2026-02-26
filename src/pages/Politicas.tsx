@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: Politicas.tsx
+ */
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Package, RefreshCw, Shield, Truck } from "lucide-react";

@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: Galeria.tsx
+ */
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import productMacrame from "@/assets/product-macrame.jpg";

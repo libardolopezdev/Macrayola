@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: main.tsx
+ */
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";

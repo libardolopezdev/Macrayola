@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: Navbar.tsx
+ */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";

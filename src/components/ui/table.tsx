@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: table.tsx
+ */
 import * as React from "react";
 
 import { cn } from "@/lib/utils";

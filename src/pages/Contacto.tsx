@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: Contacto.tsx
+ */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: avatar.tsx
+ */
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 

@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: chart.tsx
+ */
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 

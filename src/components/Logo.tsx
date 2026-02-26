@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: Logo.tsx
+ */
 import logoImg from "@/assets/logo-macrayola.png";
 
 interface LogoProps {

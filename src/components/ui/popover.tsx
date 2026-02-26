@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: popover.tsx
+ */
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 

@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: switch.tsx
+ */
 import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 

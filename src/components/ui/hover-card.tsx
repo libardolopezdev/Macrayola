@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: hover-card.tsx
+ */
 import * as React from "react";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 

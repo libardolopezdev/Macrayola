@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: NotFound.tsx
+ */
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 

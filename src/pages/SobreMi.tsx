@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: SobreMi.tsx
+ */
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Heart, Sparkles, Target } from "lucide-react";

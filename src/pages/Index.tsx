@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: Index.tsx
+ */
 import { Link } from "react-router-dom";
 import { ArrowRight, Heart, Sparkles, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";

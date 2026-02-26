@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: slider.tsx
+ */
 import * as React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 

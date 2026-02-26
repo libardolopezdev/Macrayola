@@ -1,3 +1,8 @@
+/**
+ * Proyecto: Macrayola
+ * Desarrollado por: El Ingeniero de Software Libardo Lopez
+ * Archivo: badge.tsx
+ */
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
