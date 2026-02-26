@@ -27,7 +27,7 @@ const SobreMi = () => {
                 <div className="space-y-4 text-muted-foreground animate-fade-in">
                   <p className="text-lg">
                     ¡Hola! Soy <span className="text-foreground font-semibold">Clara</span>, la
-                    artesana detrás de Hilos & Nudos.
+                    artesana detrás de Macrayola.
                   </p>
                   <p>
                     Desde pequeña me fascinaba ver a mi abuela tejer. Esas tardes llenas de
@@ -103,7 +103,7 @@ const SobreMi = () => {
               <p>
                 Después de años trabajando en diseño gráfico, sentía que algo faltaba. Necesitaba
                 crear con mis manos, tocar texturas, ver el resultado tangible de mi trabajo. Así
-                nació Hilos & Nudos en 2018.
+                nació Macrayola en 2018.
               </p>
               <p>
                 Lo que comenzó como un hobby en mi tiempo libre se convirtió en mi vocación. Dejé

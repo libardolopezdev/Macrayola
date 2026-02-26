@@ -10,6 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import heroImage from "@/assets/hero-crochet.jpg";
 
 const reservationSchema = z.object({
@@ -25,6 +32,7 @@ type ReservationForm = z.infer<typeof reservationSchema>;
 
 const Cursos = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeVideo, setActiveVideo] = useState<{ url: string, title: string } | null>(null);
 
   const {
     register,
@@ -42,8 +50,9 @@ const Cursos = () => {
       date: "15 de Enero, 2025",
       duration: "3 horas (10:00 - 13:00)",
       maxStudents: 8,
-      price: 45,
+      price: 150000,
       image: heroImage,
+      type: 'presencial' as const,
     },
     {
       title: "Macramé Intermedio",
@@ -51,8 +60,9 @@ const Cursos = () => {
       date: "22 de Enero, 2025",
       duration: "4 horas (10:00 - 14:00)",
       maxStudents: 6,
-      price: 55,
+      price: 180000,
       image: heroImage,
+      type: 'presencial' as const,
     },
     {
       title: "Cesta de Crochet",
@@ -60,21 +70,52 @@ const Cursos = () => {
       date: "29 de Enero, 2025",
       duration: "5 horas (10:00 - 15:00)",
       maxStudents: 8,
-      price: 60,
+      price: 200000,
       image: heroImage,
+      type: 'presencial' as const,
     },
+  ];
+
+  const virtualCourses = [
+    {
+      title: "Dominando el Amigurumi",
+      description: "Curso completo desde cero para crear tus propios muñecos de crochet.",
+      date: "Acceso Permanente",
+      duration: "15 lecciones (4h contenido)",
+      price: 95000,
+      image: heroImage,
+      type: 'virtual' as const,
+      videoPreviewUrl: "https://www.w3schools.com/html/mov_bbb.mp4", // Mock video
+    },
+    {
+      title: "Tapiz de Macramé Moderno",
+      description: "Decora tu casa con un tapiz profesional hecho por ti.",
+      date: "Acceso Permanente",
+      duration: "8 lecciones (2.5h contenido)",
+      price: 85000,
+      image: heroImage,
+      type: 'virtual' as const,
+      videoPreviewUrl: "https://www.w3schools.com/html/mov_bbb.mp4", // Mock video
+    }
   ];
 
   const onSubmit = async (data: ReservationForm) => {
     setIsSubmitting(true);
-    
-    // Simulación de envío - aquí se integraría con backend/email
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    toast.success("¡Reserva enviada!", {
-      description: "Te contactaremos pronto para confirmar tu cupo.",
+
+    const message = encodeURIComponent(
+      `¡Hola Macrayola! Me gustaría reservar un cupo para el curso presencial:\n\n` +
+      `Curso: ${data.course}\n` +
+      `Nombre: ${data.name}\n` +
+      `Email: ${data.email}\n` +
+      `Participantes: ${data.attendees}\n` +
+      `Mensaje: ${data.message || 'Sin mensaje adicional'}`
+    );
+
+    window.open(`https://wa.me/573104019806?text=${message}`, '_blank');
+
+    toast.success("¡Reserva enviada a WhatsApp!", {
+      description: "Se ha generado tu mensaje de reserva.",
     });
-    
     reset();
     setIsSubmitting(false);
   };
@@ -88,18 +129,20 @@ const Cursos = () => {
         <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-in">
-              Cursos Presenciales
+              Cursos Macrayola
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto animate-fade-in">
-              Aprende las técnicas de crochet y macramé en grupos pequeños. Todos los materiales
-              incluidos.
+              Aprende las técnicas de crochet y macramé. Elige entre nuestras clases presenciales en grupo o nuestra academia virtual.
             </p>
           </div>
         </section>
 
-        {/* Courses */}
+        {/* Courses Presenciales */}
         <section className="py-16">
           <div className="container mx-auto px-4">
+            <h2 className="font-display text-3xl font-bold text-foreground mb-8 border-l-4 border-primary pl-4">
+              Próximos Cursos Presenciales
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {courses.map((course, index) => (
                 <div
@@ -114,16 +157,79 @@ const Cursos = () => {
           </div>
         </section>
 
+        {/* Courses Virtuales */}
+        <section className="py-16 bg-accent/5">
+          <div className="container mx-auto px-4">
+            <h2 className="font-display text-3xl font-bold text-foreground mb-4 border-l-4 border-accent pl-4">
+              Academia Virtual Macrayola
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-2xl">
+              Aprende a tu ritmo desde cualquier lugar. Mira el video de introducción y adquiere el curso completo para acceder a todas las lecciones.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {virtualCourses.map((course, index) => (
+                <div
+                  key={index}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <CourseCard
+                    {...course}
+                    onPreview={(url, title) => setActiveVideo({ url, title })}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Video Preview Modal */}
+        <Dialog open={!!activeVideo} onOpenChange={() => setActiveVideo(null)}>
+          <DialogContent className="sm:max-w-4xl p-0 overflow-hidden bg-black">
+            <DialogHeader className="p-4 bg-card">
+              <DialogTitle className="font-display text-xl">{activeVideo?.title} - Introducción</DialogTitle>
+            </DialogHeader>
+            <div className="relative">
+              <AspectRatio ratio={16 / 9}>
+                {activeVideo && (
+                  <video
+                    src={activeVideo.url}
+                    controls
+                    autoPlay
+                    className="w-full h-full"
+                  />
+                )}
+              </AspectRatio>
+              <div className="p-6 bg-card border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Este es un video de demostración. Adquiere el curso para desbloquear todas las lecciones y materiales descargables.
+                </p>
+                <Button
+                  onClick={() => {
+                    toast.info("Función de pago", {
+                      description: "Redirigiendo a la pasarela de pago para este curso..."
+                    });
+                    setActiveVideo(null);
+                  }}
+                  className="w-full md:w-auto bg-accent hover:bg-accent/90"
+                >
+                  Comprar Curso Completo
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         {/* Reservation Form */}
         <section id="reservar" className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-8">
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  Reserva Tu Cupo
+                  Reserva Tu Cupo Presencial
                 </h2>
                 <p className="text-muted-foreground">
-                  Completa el formulario y te confirmaremos la disponibilidad
+                  Completa el formulario y te confirmaremos la disponibilidad para nuestras clases en vivo
                 </p>
               </div>
 
@@ -164,7 +270,7 @@ const Cursos = () => {
                     <Input
                       id="phone"
                       {...register("phone")}
-                      placeholder="+34 600 000 000"
+                      placeholder="+57 310 4019806"
                       className="mt-1.5"
                     />
                     {errors.phone && (
@@ -174,7 +280,7 @@ const Cursos = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="course">Curso Elegido *</Label>
+                  <Label htmlFor="course">Curso Presencial *</Label>
                   <select
                     id="course"
                     {...register("course")}
@@ -244,26 +350,30 @@ const Cursos = () => {
               <h3 className="font-display text-2xl font-semibold mb-4 text-center">
                 Información Importante
               </h3>
-              <ul className="space-y-3 text-muted-foreground">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold">•</span>
-                  <span>Todos los materiales están incluidos en el precio del curso</span>
+                  <span>Materiales incluidos en presenciales</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold">•</span>
+                  <span>Acceso de por vida en virtuales</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold">•</span>
-                  <span>Grupos reducidos para atención personalizada (máximo 8 personas)</span>
+                  <span>Máximo 8 personas por grupo vivo</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent font-bold">•</span>
+                  <span>Soporte vía WhatsApp para dudas</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold">•</span>
-                  <span>No se requiere experiencia previa en cursos para principiantes</span>
+                  <span>Certificado al finalizar el curso</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">•</span>
-                  <span>Incluye pausa para café y refrigerios</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">•</span>
-                  <span>Te llevas a casa tu proyecto terminado</span>
+                  <span className="text-accent font-bold">•</span>
+                  <span>Videos en HD con paso a paso detallado</span>
                 </li>
               </ul>
             </div>

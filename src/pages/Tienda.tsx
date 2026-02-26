@@ -9,42 +9,42 @@ const Tienda = () => {
   const products = [
     {
       name: "Tapiz de Macramé Bohemio",
-      price: 45,
+      price: 180000,
       image: productMacrame,
       description: "Decoración de pared con diseño bohemio elegante",
       materials: "Algodón 100%, madera natural",
     },
     {
       name: "Cesta de Crochet Grande",
-      price: 35,
+      price: 140000,
       image: productBasket,
       description: "Organizador espacioso para mantas y juguetes",
       materials: "Algodón reciclado",
     },
     {
       name: "Colgante para Plantas",
-      price: 28,
+      price: 65000,
       image: productPlanter,
       description: "Ideal para plantas colgantes y decoración verde",
       materials: "Cuerda de algodón resistente",
     },
     {
       name: "Tapiz de Macramé Minimalista",
-      price: 38,
+      price: 150000,
       image: productMacrame,
       description: "Diseño geométrico moderno para cualquier espacio",
       materials: "Algodón 100%",
     },
     {
       name: "Cesta de Crochet Mediana",
-      price: 28,
+      price: 95000,
       image: productBasket,
       description: "Perfecta para almacenamiento en baño o cocina",
       materials: "Algodón orgánico",
     },
     {
       name: "Set de Colgantes (3 unidades)",
-      price: 65,
+      price: 175000,
       image: productPlanter,
       description: "Tres colgantes en diferentes tamaños",
       materials: "Cuerda de algodón",
@@ -89,7 +89,7 @@ const Tienda = () => {
               para ti.
             </p>
             <a
-              href="https://wa.me/34600000000?text=Hola!%20Me%20gustaría%20hacer%20un%20pedido%20personalizado"
+              href="https://wa.me/573104019806?text=Hola!%20Me%20gustaría%20hacer%20un%20pedido%20personalizado"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold transition-smooth hover:scale-105"

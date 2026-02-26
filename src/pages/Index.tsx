@@ -13,21 +13,21 @@ const Index = () => {
   const featuredProducts = [
     {
       name: "Tapiz de Macramé",
-      price: 45,
+      price: 180000,
       image: productMacrame,
       description: "Decoración de pared con diseño bohemio",
       materials: "Algodón 100%",
     },
     {
       name: "Cesta de Crochet",
-      price: 35,
+      price: 120000,
       image: productBasket,
       description: "Organizador artesanal para tu hogar",
       materials: "Algodón reciclado",
     },
     {
       name: "Colgante para Plantas",
-      price: 28,
+      price: 95000,
       image: productPlanter,
       description: "Dale vida a tus espacios con estilo",
       materials: "Cuerda de algodón",
@@ -70,7 +70,7 @@ const Index = () => {
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
                 Descubre piezas únicas en crochet y macramé que darán calidez a tu hogar.
-                Aprende el arte del tejido en nuestros cursos presenciales.
+                Aprende el arte del tejido en nuestros cursos en Medellín o de forma virtual.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild size="lg" className="transition-smooth hover:scale-105">
@@ -120,9 +120,9 @@ const Index = () => {
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                   <Users className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-display text-xl font-semibold">Cursos Presenciales</h3>
+                <h3 className="font-display text-xl font-semibold">Cursos Presenciales y Virtuales</h3>
                 <p className="text-muted-foreground">
-                  Aprende las técnicas de crochet y macramé en grupos pequeños.
+                  Aprende las técnicas de crochet y macramé en grupos pequeños o a tu ritmo.
                 </p>
               </div>
             </div>

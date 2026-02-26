@@ -36,11 +36,17 @@ const Contacto = () => {
   const onSubmit = async (data: ContactForm) => {
     setIsSubmitting(true);
 
-    // Simulación de envío
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const message = encodeURIComponent(
+      `Hola Macrayola! Mi nombre es ${data.name}. \n` +
+      `Asunto: ${data.subject}\n` +
+      `Email: ${data.email}\n` +
+      `Mensaje: ${data.message}`
+    );
 
-    toast.success("¡Mensaje enviado!", {
-      description: "Te responderemos lo antes posible.",
+    window.open(`https://wa.me/573104019806?text=${message}`, '_blank');
+
+    toast.success("¡Abriendo WhatsApp!", {
+      description: "Se ha generado tu mensaje para enviarlo directamente.",
     });
 
     reset();
@@ -87,10 +93,10 @@ const Contacto = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Email</h3>
                       <a
-                        href="mailto:info@hilosynudos.com"
+                        href="mailto:yolis2007@hotmail.es"
                         className="text-muted-foreground hover:text-primary transition-smooth"
                       >
-                        info@hilosynudos.com
+                        yolis2007@hotmail.es
                       </a>
                     </div>
                   </div>
@@ -102,10 +108,10 @@ const Contacto = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Teléfono</h3>
                       <a
-                        href="tel:+34600000000"
+                        href="https://wa.me/573104019806"
                         className="text-muted-foreground hover:text-primary transition-smooth"
                       >
-                        +34 600 000 000
+                        +57 310 4019806
                       </a>
                     </div>
                   </div>
@@ -116,9 +122,9 @@ const Contacto = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Ubicación</h3>
-                      <p className="text-muted-foreground">Madrid, España</p>
+                      <p className="text-muted-foreground">Medellín, Colombia</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Talleres presenciales en zona centro
+                        Trabajamos desde el corazón de Antioquia
                       </p>
                     </div>
                   </div>
@@ -130,7 +136,7 @@ const Contacto = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">WhatsApp</h3>
                       <a
-                        href="https://wa.me/34600000000"
+                        href="https://wa.me/573104019806"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-primary transition-smooth"
@@ -147,12 +153,12 @@ const Contacto = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Instagram</h3>
                       <a
-                        href="https://instagram.com"
+                        href="https://instagram.com/macrayola"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-primary transition-smooth"
                       >
-                        @hilosynudos
+                        @macrayola
                       </a>
                     </div>
                   </div>

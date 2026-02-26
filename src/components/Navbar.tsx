@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import Logo from "./Logo";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -20,11 +21,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <ShoppingBag className="h-6 w-6 text-primary transition-smooth group-hover:scale-110" />
-            <span className="font-display text-xl font-semibold text-foreground">
-              Hilos & Nudos
-            </span>
+          <Link to="/" className="flex items-center group transition-smooth hover:scale-105">
+            <Logo />
           </Link>
 
           {/* Desktop Navigation */}

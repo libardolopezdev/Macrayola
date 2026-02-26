@@ -12,9 +12,9 @@ interface ProductCardProps {
 
 const ProductCard = ({ name, price, image, description, materials }: ProductCardProps) => {
   const whatsappMessage = encodeURIComponent(
-    `Hola! Estoy interesada en ${name} - ${price}€. ¿Está disponible?`
+    `¡Hola Macrayola! Estoy interesada en el producto "${name}" que vi en el catálogo de la web. ¿Me podrías dar más información sobre el precio de $${price.toLocaleString('es-CO')} y disponibilidad?`
   );
-  const whatsappLink = `https://wa.me/34600000000?text=${whatsappMessage}`;
+  const whatsappLink = `https://wa.me/573104019806?text=${whatsappMessage}`;
 
   return (
     <Card className="shadow-card hover:shadow-soft transition-smooth overflow-hidden group">
@@ -33,7 +33,7 @@ const ProductCard = ({ name, price, image, description, materials }: ProductCard
         )}
       </CardContent>
       <CardFooter className="p-4 pt-0 flex items-center justify-between">
-        <span className="font-display text-2xl font-bold text-primary">{price}€</span>
+        <span className="font-display text-2xl font-bold text-primary">${price.toLocaleString('es-CO')}</span>
         <Button asChild className="transition-smooth hover:scale-105">
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
             <MessageCircle className="mr-2 h-4 w-4" />

@@ -38,18 +38,17 @@ const Politicas = () => {
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">Zonas de Envío</h3>
                     <ul className="list-disc list-inside space-y-1 ml-4">
-                      <li>España Península: 5-7 días laborables</li>
-                      <li>Islas Baleares y Canarias: 7-10 días laborables</li>
-                      <li>Europa: 10-15 días laborables</li>
+                      <li>Medellín y área metropolitana: 1-2 días hábiles</li>
+                      <li>Principales ciudades (Bogotá, Cali, Barranquilla, etc.): 3-5 días hábiles</li>
+                      <li>Resto de Colombia: 5-8 días hábiles</li>
                     </ul>
                   </div>
 
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">Costos de Envío</h3>
                     <ul className="list-disc list-inside space-y-1 ml-4">
-                      <li>España Península: 4,95€ (GRATIS en pedidos superiores a 50€)</li>
-                      <li>Islas Baleares y Canarias: 8,95€</li>
-                      <li>Europa: Consultar al realizar el pedido</li>
+                      <li>Medellín: $10.000 (GRATIS en pedidos superiores a $150.000)</li>
+                      <li>Nacional: $15.000 - $20.000 según peso y destino</li>
                     </ul>
                   </div>
 
@@ -86,11 +85,11 @@ const Politicas = () => {
 
                 <div className="space-y-4 text-muted-foreground">
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">Plazo de Devolución</h3>
+                    <h3 className="font-semibold text-foreground mb-2">Derecho de Retracto</h3>
                     <p>
-                      Tienes 14 días naturales desde la recepción del pedido para solicitar una
-                      devolución, siempre que el producto se encuentre en perfectas condiciones y
-                      sin usar.
+                      De acuerdo con la Ley 1480 de 2011 (Estatuto del Consumidor), tienes 5 días
+                      hábiles a partir de la entrega para ejercer tu derecho de retracto, siempre que
+                      el producto no sea personalizado y se encuentre en su estado original.
                     </p>
                   </div>
 
@@ -138,11 +137,10 @@ const Politicas = () => {
                   <p>
                     Todos nuestros productos se envían cuidadosamente embalados para garantizar que
                     lleguen en perfectas condiciones. Utilizamos materiales reciclables y
-                    sostenibles siempre que es posible.
-                  </p>
-                  <p>
-                    Cada pieza incluye una tarjeta con instrucciones de cuidado y una nota de
-                    agradecimiento personalizada.
+                    sostenibles siempre que es posible. Al navegar por Macrayola y realizar una compra, aceptas que somos una
+                    marca artesanal colombiana y que los tiempos de entrega pueden variar según
+                    la complejidad de la pieza. Nos comprometemos a mantenerte
+                    informada en todo momento a través de yolis2007@hotmail.es.
                   </p>
                 </div>
               </div>
@@ -163,13 +161,14 @@ const Politicas = () => {
 
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    Todas nuestras piezas están hechas a mano con los mejores materiales. Si
-                    encuentras algún defecto de fabricación, contáctanos inmediatamente y
-                    resolveremos el problema sin costo adicional.
+                    Todas nuestras piezas están hechas a mano con los mejores materiales. Nuestra garantía
+                    legal se ajusta a lo dispuesto en la normativa colombiana vigente (Ley 1480 de 2011).
+                    Si encuentras algún defecto de fabricación, contáctanos inmediatamente.
                   </p>
                   <p>
                     Nuestra garantía cubre defectos de fabricación durante los primeros 30 días
-                    desde la recepción del producto.
+                    calendario desde la recepción del producto. Para más información, puedes consultar
+                    la página de la Superintendencia de Industria y Comercio (SIC).
                   </p>
                 </div>
               </div>

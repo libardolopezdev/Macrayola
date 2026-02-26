@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
@@ -8,9 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-foreground">
-              Hilos & Nudos
-            </h3>
+            <Logo />
             <p className="text-muted-foreground text-sm">
               Piezas artesanales hechas a mano con amor. Crochet y macramé para tu hogar.
             </p>
@@ -66,15 +65,15 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <span>info@hilosynudos.com</span>
+                <span>yolis2007@hotmail.es</span>
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+34 600 000 000</span>
+                <span>+57 310 4019806</span>
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                <span>Madrid, España</span>
+                <span>Medellín, Colombia</span>
               </li>
               <li>
                 <a
@@ -92,7 +91,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Hilos & Nudos. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Macrayola. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
