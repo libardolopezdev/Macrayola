@@ -1,34 +1,52 @@
-/**
- * Proyecto: Macrayola
- * Desarrollado por: El Ingeniero de Software Libardo Lopez
- * Archivo: ProductCard.tsx
- */
-import { MessageCircle } from "lucide-react";
+import { ShoppingCart, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useCart } from "@/store/useCart";
+import { toast } from "sonner";
+import { getVideoThumbnail } from "@/lib/utils";
 
 interface ProductCardProps {
+  id?: string;
   name: string;
   price: number;
-  image: string;
+  image: string; // This is the URL (mediaUrl)
+  mediaType?: 'image' | 'video';
   description: string;
   materials?: string;
+  onPreview?: (url: string, title: string) => void;
 }
 
-const ProductCard = ({ name, price, image, description, materials }: ProductCardProps) => {
-  const whatsappMessage = encodeURIComponent(
-    `¡Hola Macrayola! Estoy interesada en el producto "${name}" que vi en el catálogo de la web. ¿Me podrías dar más información sobre el precio de $${price.toLocaleString('es-CO')} y disponibilidad?`
-  );
-  const whatsappLink = `https://wa.me/573104019806?text=${whatsappMessage}`;
+const ProductCard = ({ id, name, price, image, mediaType = 'image', description, materials, onPreview }: ProductCardProps) => {
+  const { addItem } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addItem({ name, price, image });
+    toast.success("Añadido al carrito", {
+      description: `${name} ha sido agregado a tu cesta.`,
+    });
+  };
+
+  const handleClick = () => {
+    if (mediaType === 'video' && onPreview) {
+      onPreview(image, name);
+    }
+  };
 
   return (
-    <Card className="shadow-card hover:shadow-soft transition-smooth overflow-hidden group">
-      <div className="aspect-square overflow-hidden bg-muted">
+    <Card className={`shadow-card hover:shadow-soft transition-smooth overflow-hidden group ${mediaType === 'video' ? 'cursor-pointer' : ''}`} onClick={handleClick}>
+      <div className="aspect-square overflow-hidden bg-muted relative">
         <img
-          src={image}
+          src={mediaType === 'video' ? getVideoThumbnail(image) : image}
           alt={name}
+          loading="lazy"
           className="w-full h-full object-cover transition-smooth group-hover:scale-105"
         />
+        {mediaType === 'video' && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-smooth">
+            <PlayCircle className="h-12 w-12 text-white drop-shadow-lg opacity-80 group-hover:opacity-100 transition-smooth" />
+          </div>
+        )}
       </div>
       <CardContent className="p-4">
         <h3 className="font-display text-xl font-semibold mb-2 text-foreground">{name}</h3>
@@ -39,11 +57,9 @@ const ProductCard = ({ name, price, image, description, materials }: ProductCard
       </CardContent>
       <CardFooter className="p-4 pt-0 flex items-center justify-between">
         <span className="font-display text-2xl font-bold text-primary">${price.toLocaleString('es-CO')}</span>
-        <Button asChild className="transition-smooth hover:scale-105">
-          <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <MessageCircle className="mr-2 h-4 w-4" />
-            Pedir por WhatsApp
-          </a>
+        <Button onClick={handleAddToCart} className="transition-smooth hover:scale-105 bg-primary text-primary-foreground">
+          <ShoppingCart className="mr-2 h-4 w-4" />
+          Añadir al Carrito
         </Button>
       </CardFooter>
     </Card>

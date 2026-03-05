@@ -13,8 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, MapPin, Phone, Instagram, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const contactSchema = z.object({
   name: z.string().min(2, "El nombre es requerido").max(100),
@@ -22,6 +24,9 @@ const contactSchema = z.object({
   phone: z.string().min(9, "Teléfono inválido").max(20).optional(),
   subject: z.string().min(3, "El asunto es requerido").max(200),
   message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres").max(1000),
+  acceptTerms: z.literal(true, {
+    errorMap: () => ({ message: "Debes aceptar las políticas de privacidad" }),
+  }),
 });
 
 type ContactForm = z.infer<typeof contactSchema>;
@@ -256,6 +261,32 @@ const Contacto = () => {
                     {errors.message && (
                       <p className="text-destructive text-sm mt-1">{errors.message.message}</p>
                     )}
+                  </div>
+
+                  <div className="flex flex-row items-center space-x-3 space-y-0 p-4 border rounded-md">
+                    <Checkbox
+                      id="acceptTerms"
+                      onCheckedChange={(checked) => {
+                        register("acceptTerms").onChange({
+                          target: { name: "acceptTerms", value: checked },
+                        });
+                      }}
+                      {...register("acceptTerms")}
+                    />
+                    <div className="space-y-1 leading-none mt-1">
+                      <Label htmlFor="acceptTerms" className="text-sm font-medium">
+                        Acepto las políticas de privacidad
+                      </Label>
+                      <p className="text-xs text-muted-foreground mt-1.5">
+                        Al enviar este mensaje, aceptas nuestra{" "}
+                        <Link to="/politicas" className="text-primary hover:underline">
+                          política de datos
+                        </Link>.
+                      </p>
+                      {errors.acceptTerms && (
+                        <p className="text-destructive text-sm mt-1">{errors.acceptTerms.message}</p>
+                      )}
+                    </div>
                   </div>
 
                   <Button

@@ -1,13 +1,9 @@
-/**
- * Proyecto: Macrayola
- * Desarrollado por: El Ingeniero de Software Libardo Lopez
- * Archivo: Navbar.tsx
- */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CartSheet } from "./CartSheet";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,14 +37,19 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-foreground hover:text-primary transition-smooth"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            <CartSheet />
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 text-foreground hover:text-primary transition-smooth"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}

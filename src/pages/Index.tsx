@@ -3,41 +3,45 @@
  * Desarrollado por: El Ingeniero de Software Libardo Lopez
  * Archivo: Index.tsx
  */
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Heart, Sparkles, Users } from "lucide-react";
+import { ArrowRight, Heart, Sparkles, Users, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import heroImage from "@/assets/hero-crochet.jpg";
-import productMacrame from "@/assets/product-macrame.jpg";
-import productBasket from "@/assets/product-basket.jpg";
-import productPlanter from "@/assets/product-planter.jpg";
+import Logo from "@/components/Logo";
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { Product } from "@/types/product";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const Index = () => {
-  const featuredProducts = [
-    {
-      name: "Tapiz de Macramé",
-      price: 180000,
-      image: productMacrame,
-      description: "Decoración de pared con diseño bohemio",
-      materials: "Algodón 100%",
-    },
-    {
-      name: "Cesta de Crochet",
-      price: 120000,
-      image: productBasket,
-      description: "Organizador artesanal para tu hogar",
-      materials: "Algodón reciclado",
-    },
-    {
-      name: "Colgante para Plantas",
-      price: 95000,
-      image: productPlanter,
-      description: "Dale vida a tus espacios con estilo",
-      materials: "Cuerda de algodón",
-    },
-  ];
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeVideo, setActiveVideo] = useState<{ url: string, title: string } | null>(null);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const q = query(collection(db, "products"), orderBy("order", "asc"), limit(3));
+        const querySnapshot = await getDocs(q);
+        const data: Product[] = [];
+        querySnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() } as Product);
+        });
+        setFeaturedProducts(data);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
 
   const testimonials = [
     {
@@ -70,6 +74,9 @@ const Index = () => {
 
           <div className="relative container mx-auto px-4 h-full flex items-center">
             <div className="max-w-2xl animate-fade-in">
+              <div className="mb-6 inline-block bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-lg border border-primary/20">
+                <Logo showText={false} imgClassName="h-24 w-24 md:h-32 md:w-32" />
+              </div>
               <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6">
                 Hecho a mano con cariño
               </h1>
@@ -142,17 +149,28 @@ const Index = () => {
                 Productos Destacados
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Piezas artesanales para decorar y dar vida a tus espacios
+                Las piezas más queridas por nuestros clientes
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-              {featuredProducts.map((product) => (
-                <ProductCard key={product.name} {...product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="flex flex-col items-center py-12">
+                <Loader2 className="h-10 w-10 animate-spin text-primary mb-2" />
+                <p className="text-muted-foreground">Cargando destacados...</p>
+              </div>
+            ) : featuredProducts.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Próximamente nuevos ingresos.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+                {featuredProducts.map((product) => (
+                  <ProductCard key={product.id} {...product} onPreview={(url, title) => setActiveVideo({ url, title })} />
+                ))}
+              </div>
+            )}
 
-            <div className="text-center">
+            <div className="text-center mt-8">
               <Button asChild variant="outline" size="lg">
                 <Link to="/tienda">
                   Ver Toda la Tienda
@@ -162,6 +180,27 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        {/* Video Preview Modal */}
+        <Dialog open={!!activeVideo} onOpenChange={() => setActiveVideo(null)}>
+          <DialogContent className="sm:max-w-4xl p-0 overflow-hidden bg-black">
+            <DialogHeader className="p-4 bg-card">
+              <DialogTitle className="font-display text-xl">{activeVideo?.title}</DialogTitle>
+            </DialogHeader>
+            <div className="relative">
+              <AspectRatio ratio={16 / 9}>
+                {activeVideo && (
+                  <video
+                    src={activeVideo.url}
+                    controls
+                    autoPlay
+                    className="w-full h-full"
+                  />
+                )}
+              </AspectRatio>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Testimonials */}
         <section className="py-20 bg-secondary/30">

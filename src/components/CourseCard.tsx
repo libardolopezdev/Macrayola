@@ -7,6 +7,7 @@ import { Calendar, Clock, Users, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { getVideoThumbnail } from "@/lib/utils";
 
 interface CourseCardProps {
   title: string;
@@ -15,9 +16,9 @@ interface CourseCardProps {
   duration: string;
   maxStudents?: number;
   price: number;
-  image: string;
+  mediaUrl: string;
+  mediaType?: 'image' | 'video';
   type?: 'presencial' | 'virtual';
-  videoPreviewUrl?: string;
   onPreview?: (url: string, title: string) => void;
 }
 
@@ -28,25 +29,29 @@ const CourseCard = ({
   duration,
   maxStudents,
   price,
-  image,
+  mediaUrl,
+  mediaType = 'image',
   type = 'presencial',
-  videoPreviewUrl,
   onPreview,
 }: CourseCardProps) => {
   const handleClick = () => {
-    if (type === 'virtual' && videoPreviewUrl && onPreview) {
-      onPreview(videoPreviewUrl, title);
+    if (onPreview) {
+      onPreview(mediaUrl, title);
     }
   };
 
   return (
     <Card className="shadow-card hover:shadow-soft transition-smooth overflow-hidden group">
       <div
-        className={`relative h-48 overflow-hidden bg-muted ${type === 'virtual' ? 'cursor-pointer' : ''}`}
+        className={`relative h-48 overflow-hidden bg-muted ${(type === 'virtual' || mediaType === 'video') ? 'cursor-pointer' : ''}`}
         onClick={handleClick}
       >
-        <img src={image} alt={title} className="w-full h-full object-cover transition-smooth group-hover:scale-110" />
-        {type === 'virtual' && (
+        <img
+          src={mediaType === 'video' ? getVideoThumbnail(mediaUrl) : mediaUrl}
+          alt={title}
+          className="w-full h-full object-cover transition-smooth group-hover:scale-110"
+        />
+        {(type === 'virtual' || mediaType === 'video') && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-smooth">
             <PlayCircle className="h-12 w-12 text-white drop-shadow-lg opacity-80 group-hover:opacity-100 transition-smooth" />
           </div>
@@ -83,13 +88,13 @@ const CourseCard = ({
           <span className="text-xs text-muted-foreground">Total</span>
           <span className="font-display text-2xl font-bold text-primary">${price.toLocaleString('es-CO')}</span>
         </div>
-        {type === 'virtual' ? (
+        {type === 'virtual' || mediaType === 'video' ? (
           <Button
             variant="secondary"
             className="transition-smooth hover:scale-105"
             onClick={handleClick}
           >
-            Ver Trailer
+            Ver {mediaType === 'video' ? 'Video' : 'Preview'}
           </Button>
         ) : (
           <Button asChild className="transition-smooth hover:scale-105">

@@ -3,58 +3,41 @@
  * Desarrollado por: El Ingeniero de Software Libardo Lopez
  * Archivo: Tienda.tsx
  */
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import productMacrame from "@/assets/product-macrame.jpg";
-import productBasket from "@/assets/product-basket.jpg";
-import productPlanter from "@/assets/product-planter.jpg";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { Product } from "@/types/product";
+import { Loader2 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const Tienda = () => {
-  const products = [
-    {
-      name: "Tapiz de Macramé Bohemio",
-      price: 180000,
-      image: productMacrame,
-      description: "Decoración de pared con diseño bohemio elegante",
-      materials: "Algodón 100%, madera natural",
-    },
-    {
-      name: "Cesta de Crochet Grande",
-      price: 140000,
-      image: productBasket,
-      description: "Organizador espacioso para mantas y juguetes",
-      materials: "Algodón reciclado",
-    },
-    {
-      name: "Colgante para Plantas",
-      price: 65000,
-      image: productPlanter,
-      description: "Ideal para plantas colgantes y decoración verde",
-      materials: "Cuerda de algodón resistente",
-    },
-    {
-      name: "Tapiz de Macramé Minimalista",
-      price: 150000,
-      image: productMacrame,
-      description: "Diseño geométrico moderno para cualquier espacio",
-      materials: "Algodón 100%",
-    },
-    {
-      name: "Cesta de Crochet Mediana",
-      price: 95000,
-      image: productBasket,
-      description: "Perfecta para almacenamiento en baño o cocina",
-      materials: "Algodón orgánico",
-    },
-    {
-      name: "Set de Colgantes (3 unidades)",
-      price: 175000,
-      image: productPlanter,
-      description: "Tres colgantes en diferentes tamaños",
-      materials: "Cuerda de algodón",
-    },
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeVideo, setActiveVideo] = useState<{ url: string, title: string } | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const q = query(collection(db, "products"), orderBy("order", "asc"));
+        const querySnapshot = await getDocs(q);
+        const data: Product[] = [];
+        querySnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() } as Product);
+        });
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -74,17 +57,28 @@ const Tienda = () => {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product, index) => (
-              <div
-                key={index}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <ProductCard {...product} />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex flex-col items-center py-20">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+              <p className="text-muted-foreground text-lg">Cargando nuestra colección...</p>
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-20 bg-secondary/30 rounded-xl border border-dashed border-border">
+              <p className="text-muted-foreground text-lg">Próximamente nuevos ingresos. ¡Vuelve pronto!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((product, index) => (
+                <div
+                  key={product.id || index}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <ProductCard {...product} onPreview={(url, title) => setActiveVideo({ url, title })} />
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Info Box */}
           <div className="mt-16 bg-secondary/50 rounded-lg p-8 text-center">
@@ -103,6 +97,27 @@ const Tienda = () => {
             </a>
           </div>
         </div>
+
+        {/* Video Preview Modal */}
+        <Dialog open={!!activeVideo} onOpenChange={() => setActiveVideo(null)}>
+          <DialogContent className="sm:max-w-4xl p-0 overflow-hidden bg-black">
+            <DialogHeader className="p-4 bg-card">
+              <DialogTitle className="font-display text-xl">{activeVideo?.title}</DialogTitle>
+            </DialogHeader>
+            <div className="relative">
+              <AspectRatio ratio={16 / 9}>
+                {activeVideo && (
+                  <video
+                    src={activeVideo.url}
+                    controls
+                    autoPlay
+                    className="w-full h-full"
+                  />
+                )}
+              </AspectRatio>
+            </div>
+          </DialogContent>
+        </Dialog>
       </main>
 
       <Footer />

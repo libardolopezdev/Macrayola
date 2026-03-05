@@ -3,7 +3,7 @@
  * Desarrollado por: El Ingeniero de Software Libardo Lopez
  * Archivo: Cursos.tsx
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { Course } from "@/types/course";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import heroImage from "@/assets/hero-crochet.jpg";
+import { Loader2 } from "lucide-react";
 
 const reservationSchema = z.object({
   name: z.string().min(2, "El nombre es requerido").max(100),
@@ -38,6 +42,8 @@ type ReservationForm = z.infer<typeof reservationSchema>;
 const Cursos = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeVideo, setActiveVideo] = useState<{ url: string, title: string } | null>(null);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
@@ -48,61 +54,27 @@ const Cursos = () => {
     resolver: zodResolver(reservationSchema),
   });
 
-  const courses = [
-    {
-      title: "Crochet para Principiantes",
-      description: "Aprende los puntos básicos y crea tu primera pieza",
-      date: "15 de Enero, 2025",
-      duration: "3 horas (10:00 - 13:00)",
-      maxStudents: 8,
-      price: 150000,
-      image: heroImage,
-      type: 'presencial' as const,
-    },
-    {
-      title: "Macramé Intermedio",
-      description: "Técnicas avanzadas de nudos y patrones decorativos",
-      date: "22 de Enero, 2025",
-      duration: "4 horas (10:00 - 14:00)",
-      maxStudents: 6,
-      price: 180000,
-      image: heroImage,
-      type: 'presencial' as const,
-    },
-    {
-      title: "Cesta de Crochet",
-      description: "Crea una cesta decorativa paso a paso",
-      date: "29 de Enero, 2025",
-      duration: "5 horas (10:00 - 15:00)",
-      maxStudents: 8,
-      price: 200000,
-      image: heroImage,
-      type: 'presencial' as const,
-    },
-  ];
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const q = query(collection(db, "courses"), orderBy("order", "asc"));
+        const snapshot = await getDocs(q);
+        const data: Course[] = [];
+        snapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() } as Course);
+        });
+        setCourses(data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
 
-  const virtualCourses = [
-    {
-      title: "Dominando el Amigurumi",
-      description: "Curso completo desde cero para crear tus propios muñecos de crochet.",
-      date: "Acceso Permanente",
-      duration: "15 lecciones (4h contenido)",
-      price: 95000,
-      image: heroImage,
-      type: 'virtual' as const,
-      videoPreviewUrl: "https://www.w3schools.com/html/mov_bbb.mp4", // Mock video
-    },
-    {
-      title: "Tapiz de Macramé Moderno",
-      description: "Decora tu casa con un tapiz profesional hecho por ti.",
-      date: "Acceso Permanente",
-      duration: "8 lecciones (2.5h contenido)",
-      price: 85000,
-      image: heroImage,
-      type: 'virtual' as const,
-      videoPreviewUrl: "https://www.w3schools.com/html/mov_bbb.mp4", // Mock video
-    }
-  ];
+  const presencialCourses = courses.filter(c => c.type === 'presencial');
+  const virtualCourses = courses.filter(c => c.type === 'virtual');
 
   const onSubmit = async (data: ReservationForm) => {
     setIsSubmitting(true);
@@ -148,17 +120,25 @@ const Cursos = () => {
             <h2 className="font-display text-3xl font-bold text-foreground mb-8 border-l-4 border-primary pl-4">
               Próximos Cursos Presenciales
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {courses.map((course, index) => (
-                <div
-                  key={index}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CourseCard {...course} />
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : presencialCourses.length === 0 ? (
+              <p className="text-muted-foreground italic">No hay productos programados próximamente.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {presencialCourses.map((course, index) => (
+                  <div
+                    key={index}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CourseCard {...course} onPreview={(url, title) => setActiveVideo({ url, title })} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -172,18 +152,26 @@ const Cursos = () => {
               Aprende a tu ritmo desde cualquier lugar. Mira el video de introducción y adquiere el curso completo para acceder a todas las lecciones.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {virtualCourses.map((course, index) => (
-                <div
-                  key={index}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CourseCard
-                    {...course}
-                    onPreview={(url, title) => setActiveVideo({ url, title })}
-                  />
+              {loading ? (
+                <div className="col-span-full flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-accent" />
                 </div>
-              ))}
+              ) : virtualCourses.length === 0 ? (
+                <p className="text-muted-foreground italic col-span-full">Nuestra academia virtual está preparando nuevos contenidos para ti.</p>
+              ) : (
+                virtualCourses.map((course, index) => (
+                  <div
+                    key={index}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CourseCard
+                      {...course}
+                      onPreview={(url, title) => setActiveVideo({ url, title })}
+                    />
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </section>
@@ -192,7 +180,7 @@ const Cursos = () => {
         <Dialog open={!!activeVideo} onOpenChange={() => setActiveVideo(null)}>
           <DialogContent className="sm:max-w-4xl p-0 overflow-hidden bg-black">
             <DialogHeader className="p-4 bg-card">
-              <DialogTitle className="font-display text-xl">{activeVideo?.title} - Introducción</DialogTitle>
+              <DialogTitle className="font-display text-xl">{activeVideo?.title}</DialogTitle>
             </DialogHeader>
             <div className="relative">
               <AspectRatio ratio={16 / 9}>
@@ -292,7 +280,7 @@ const Cursos = () => {
                     className="w-full mt-1.5 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Selecciona un curso</option>
-                    {courses.map((course, index) => (
+                    {presencialCourses.map((course, index) => (
                       <option key={index} value={course.title}>
                         {course.title} - {course.date}
                       </option>
